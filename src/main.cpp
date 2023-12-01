@@ -12,6 +12,11 @@ String bufPass;
 char keyScan(void);
 
 void setup() {
+  pinMode(beep, OUTPUT);
+  pinMode(lock, OUTPUT);  
+  digitalWrite(beep, LOW);
+  digitalWrite(lock, HIGH);
+
   Serial.begin(9600);
 
   for (int i=0; i<4; i++) {
@@ -21,10 +26,6 @@ void setup() {
   for (int i=0; i<3; i++) {
     pinMode(col[i], INPUT_PULLUP);
   }
-
-  pinMode(beep, OUTPUT);
-  pinMode(lock, OUTPUT);  
-  digitalWrite(lock, HIGH);
 }
 
 void loop() {
@@ -35,6 +36,9 @@ void loop() {
       if (bufPass == validPass) {
         Serial.println("\nPassed");
         digitalWrite(lock, LOW);
+        tone(beep, 1000);
+        delay(500);
+        noTone(beep);
       } else {
         Serial.println("\nAccess Denied");
       }
