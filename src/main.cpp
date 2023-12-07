@@ -33,6 +33,7 @@ void displayIdle(void);
 void displayLock(void);
 void playWinSound(void);
 void playFailSound(void);
+void playProtectSound(void);
 
 void setup() {
   pinMode(beep, OUTPUT);
@@ -74,7 +75,7 @@ void loop() {
       } else {
         displayDeny();
         playFailSound();
-        delay(5000);
+        delay(3000);
         displayIdle();
         Serial.println("\nAccess Denied");
       }
@@ -85,8 +86,9 @@ void loop() {
         digitalWrite(lock, HIGH);
         f_lock = true;
         displayLock();
+        playProtectSound();
         Serial.println("\nLocked");
-        delay(2000);
+        delay(1500);
         displayIdle();
       } else if (f_lock == true) {
         displayKeyPress("");
@@ -184,5 +186,16 @@ void playFailSound() {
   delay(250);
   tone(beep, NOTE_A4, 200);
   delay(250);
+  noTone(beep); // Stop the buzzer
+}
+
+void playProtectSound() {
+  // Play a custom melody for protection
+  tone(beep, NOTE_G6, 200);
+  delay(200);
+  tone(beep, NOTE_A6, 200);
+  delay(200);
+  tone(beep, NOTE_B6, 200);
+  delay(200);
   noTone(beep); // Stop the buzzer
 }
